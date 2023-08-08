@@ -89,6 +89,15 @@ def main():
    else:
       st.session_state["datafile"] = st.sidebar.file_uploader("Please upload an excel file: ", type=['xlsx'])
 
+GPD = st.checkbox("Voulez-vous continuer avec les mandats GPD? ")
+Guide = st.checkbox("Voulez-vous etre guider? ")
+
+if GPD and Guide:
+   st.write("lien vers Questionnaire")
+if GPD and not Guide:   
+   st.write("lien vers rendements")
+
+
 
 if __name__ == "__main__":
    main()

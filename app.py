@@ -95,9 +95,9 @@ def main():
       guide = st.radio(" ", ("J'ai besoin d'etre guider", "Je veux choisir moi meme mes mandats"))
       #Guide = st.checkbox("Voulez-vous etre guider? ")
       if GPD and (guide == "J'ai besoin d'etre guider"):
-         st.markdown('<a href="https://investmentora.streamlit.app/Questionnaire">Questionnaire</a>', unsafe_allow_html=True)
-      if GPD and not guide:   
-         st.markdown('<a href="https://investmentora.streamlit.app/Rendement">Comparaison des mandats</a>', unsafe_allow_html=True)
+         st.markdown('<a href="https://investmentora.streamlit.app/Questionnaire" target="_self" >Questionnaire</a>', unsafe_allow_html=True)
+      if GPD and (guide == "Je veux choisir moi meme mes mandats"):  
+         st.markdown('<a href="https://investmentora.streamlit.app/Rendement" target="_self">Comparaison des mandats</a>', unsafe_allow_html=True)
 
 
 

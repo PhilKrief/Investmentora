@@ -104,3 +104,4 @@ def questionnaire():
 with st.container():
     risk_level = questionnaire()
     st.write("Your risk level is:", risk_level)
+    st.write(st.session_state.test)

@@ -93,12 +93,12 @@ def main():
   
 
    if GPD:
-      guide = st.radio("Voulez-vous etre guider? ", ("J'ai besoin d'etre guider", "Je veux choisir moi meme mes mandats"))
+      guide = st.radio(" ", ("J'ai besoin d'etre guider", "Je veux choisir moi meme mes mandats"))
       #Guide = st.checkbox("Voulez-vous etre guider? ")
       if GPD and guide:
-         st.write("lien vers Questionnaire")
+         st.markdown('<a href="https://www.example.com">Link Text 1</a>', unsafe_allow_html=True)
       if GPD and not guide:   
-         st.write("lien vers rendements")
+         st.markdown('<a href="https://www.example.com">Link Text 2</a>', unsafe_allow_html=True)
 
 
 

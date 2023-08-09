@@ -71,6 +71,7 @@ questions = {
 
 with st.form("Personal Information"):
    # Define questions and choices
+   questionnaire()
 
    submitted = st.form_submit_button("Submit")
 

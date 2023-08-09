@@ -82,23 +82,22 @@ def main():
    <p>Étape 1 : Téléchargez vos données. Si vous souhaitez utiliser un ensemble de valeurs générées aléatoirement pour chacun des mandats privés de GPD, veuillez cocher la case ci-dessous. </p> </div>"""
    st.markdown(guide_html, unsafe_allow_html=True)
 
-   randomdata = st.checkbox("Voulez-vous utiliser des données aléatoires?")
+   #randomdata = st.checkbox("Voulez-vous utiliser des données aléatoires?")
 
-   if randomdata:
-      st.session_state["datafile"] = "Sources - PowerBI Dashboard - GPD_SSD_VMD RandomData.xlsx"
-   else:
-      st.session_state["datafile"] = st.sidebar.file_uploader("Please upload an excel file: ", type=['xlsx'])
+   #if randomdata:
+   st.session_state["datafile"] = "Sources - PowerBI Dashboard - GPD_SSD_VMD RandomData.xlsx"
+   #else:
+#st.session_state["datafile"] = st.sidebar.file_uploader("Please upload an excel file: ", type=['xlsx'])
 
    GPD = st.checkbox("Voulez-vous continuer avec les mandats GPD? ")
   
-
    if GPD:
       guide = st.radio(" ", ("J'ai besoin d'etre guider", "Je veux choisir moi meme mes mandats"))
       #Guide = st.checkbox("Voulez-vous etre guider? ")
-      if GPD and guide:
-         st.markdown('<a href="https://www.example.com">Link Text 1</a>', unsafe_allow_html=True)
+      if GPD and (guide == "J'ai besoin d'etre guider"):
+         st.markdown('<a href="https://investmentora.streamlit.app/Questionnaire">Questionnaire</a>', unsafe_allow_html=True)
       if GPD and not guide:   
-         st.markdown('<a href="https://www.example.com">Link Text 2</a>', unsafe_allow_html=True)
+         st.markdown('<a href="https://investmentora.streamlit.app/Rendement">Comparaison des mandats</a>', unsafe_allow_html=True)
 
 
 

@@ -15,16 +15,6 @@ if "periodes" not in st.session_state:
    st.session_state["periodes"] = True
 if "personal_information" not in st.session_state:
    st.session_state["personal_information"] = True
-if "test" not in st.session_state:
-   st.session_state["test"] = True
-
-
-#Sidebar contents
-st.sidebar.title("Sidebar")
-
-
-
-import streamlit as st
 
 def main():
     # Add custom CSS styles
@@ -67,8 +57,6 @@ def main():
       # Add the header text
       header_col.markdown("<h1 style='text-align: center;'>InvestMentora </h1>", unsafe_allow_html=True)
       header_col.markdown("<h2 style='text-align: center;'>Outil d'analyse et automatisation </h2>", unsafe_allow_html=True)
-   datatest = st.text_input("Entrez votre nom")
-   st.session_state.test = datatest
    st.write("---")  # Horizontal line for visual separation
 
    # Overview Section

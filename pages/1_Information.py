@@ -21,14 +21,57 @@ with header_container:
 
 st.write("---")  # Horizontal line for visual separation
 
+def personal_infomration():
+    # Create a form and display the form
+    name =  st.text_input("Nom")
+    occupation = st.text_input("Occupation") 
+    age = st.number_input("Age") 
+    address = st.text_area("Adresse")    
 
-with st.form("Personal Information"):
-   name =  st.text_input("Nom")
-   occupation = st.text_input("Occupation") 
-   age = st.number_input("Age") 
-   address = st.text_area("Adresse")    
+# Define question function
+def ask_question(question):
+    st.subheader(question["text"])
+    choice = st.radio("", question["choices"])
+    return choice, question["score"].index(choice)
+
+# Define questionnaire function
+def questionnaire():
+    st.write("Please answer the following questions to assess your risk level.")
+    risk_level = 0
+    for i, question in enumerate(questions.values()):
+        choice, score = ask_question(question)
+        st.write(score)
+    return risk_level
+
 
    # Every form must have a submit button.
+   
+questions = {
+    "Question 1": {
+        "text": "What is your investment experience?",
+        "choices": ["No experience", "Limited experience", "Moderate experience", "Extensive experience"],
+        "score":[1,2,3,4]
+    },
+    "Question 2": {
+        "text": "What is your investment goal?",
+        "choices": ["Preservation of capital", "Income", "Growth", "Aggressive growth"],
+        'score':[1,2,3,4],
+    },
+    "Question 3": {
+        "text": "What is your investment time horizon?",
+        "choices": ["Less than 1 year", "1-5 years", "5-10 years", "More than 10 years"],
+        "score":[4,3,2,1],
+    },
+    "Question 4": {
+        "text": "What is your risk tolerance?",
+        "choices": ["Very low", "Low", "Moderate", "High", "Very high"],
+        'score':[1,2,3,4,5],
+    }
+}
+
+with st.form("Personal Information"):
+   # Define questions and choices
+
    submitted = st.form_submit_button("Submit")
 
    if submitted:

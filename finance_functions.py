@@ -5,6 +5,16 @@ from datetime import datetime, timedelta
 pd.set_option('display.max_columns', 500)
 
 #Basic Calculations
+
+def allocation_df(allocations, portfolio_returns):
+    allocation_df = pd.DataFrame(columns=portfolio_returns.columns, index=portfolio_returns.index)
+    allocations = allocations.set_index("Ticker")
+    allocations = allocations.astype(float)/100
+    for ticker in allocation_df.columns:
+        allocation_df[ticker] = allocations.loc[ticker, "Allocation"]
+
+    return allocation_df
+
 def calculate_portfolio_returns(allocations, returns):
     """
     Calculates the returns of a portfolio based on allocations. 
@@ -25,22 +35,17 @@ def calculate_portfolio_returns(allocations, returns):
     # Recalculate the allocations for each row
     row_sum = allocations.apply(lambda row: row.sum(skipna=True), axis=1)
     norm_alloc = allocations.div(row_sum, axis=0)
-    print(norm_alloc)
-
     portfolio_returns = (returns * norm_alloc).sum(axis=1) 
-    print(portfolio_returns)
-    print(returns * allocations)
+    return portfolio_returns
 
-    return norm_alloc
-
-def get_stock_portfolio_prices(portfolio):
+def get_daily_stock_portfolio_prices(portfolio, key):
     # Define the start and end dates (10 years ago from today)
     end_date = datetime.today().strftime('%Y-%m-%d')
     start_date = (datetime.today() - timedelta(days=3653)).strftime('%Y-%m-%d')
 
     dfs = []
     for stock in portfolio:
-        dum = get_stock_prices_daily(stock, start_date, end_date)
+        dum = get_daily_stock_prices(stock, key)
         dum = dum[['date', 'close']]
         dum.columns = ['date', stock]
         dum.set_index('date', inplace=True)
@@ -52,7 +57,28 @@ def get_stock_portfolio_prices(portfolio):
     merged_df.to_csv("tester_data.csv")
     return merged_df
 
-def calculate_daily_returns(df):
+def get_monthly_stock_portfolio_prices(portfolio, key):
+    # Define the start and end dates (10 years ago from today)
+    end_date = datetime.today().strftime('%Y-%m-%d')
+    start_date = (datetime.today() - timedelta(days=3653)).strftime('%Y-%m-%d')
+
+    dfs = []
+    for stock in portfolio:
+        dum = get_monthly_stock_prices(stock, key)
+        dum = dum[['date', 'close']]
+        dum.columns = ['date', stock]
+        dum.set_index('date', inplace=True)
+        dfs.append(dum)
+
+    merged_df = pd.concat(dfs, axis=1)
+
+
+    merged_df.to_csv("tester_data.csv")
+    return merged_df
+
+
+
+def calculate_returns(df):
     """
     Calculates the daily returns of each stock in a merged dataframe of historical prices.
     
@@ -63,8 +89,11 @@ def calculate_daily_returns(df):
     pandas.DataFrame: A dataframe of daily returns for each stock in the input dataframe.
     """
     # Calculate the daily returns for each stock
+    try:
+        df = df.set_index("date")
+    except:
+        df = df
 
-    df = df.set_index("date")
     returns_df = df.iloc[:, :].pct_change(-1)
     
     # Replace the first row of NaNs with 0s
@@ -74,9 +103,40 @@ def calculate_daily_returns(df):
     
     return returns_df
 
-
 ##### Financial Modelling Prep Functions
-def get_stock_prices_daily(stock, key):
+def get_monthly_stock_prices(stock, key):
+    end_date = datetime.today().strftime('%Y-%m-%d')
+    start_date = (datetime.today() - timedelta(days=3653)).strftime('%Y-%m-%d')
+
+    """
+    gets stock prices on a monthly basis from FMP
+
+    Args:
+        stock (str): Ticker
+        start_date (datetime): start date
+        end_date (datetime): end date
+
+    Returns:
+        _type_: _description_
+    """
+    url = f'https://financialmodelingprep.com/api/v3/historical-price-full/{stock}?from={start_date}&to={end_date}&apikey={key}'
+    response = requests.get(url)
+    data = response.json()
+    df = pd.DataFrame(data['historical'])
+    df["date"] = pd.to_datetime(df["date"])
+    # Group by year and month, then select the maximum date within each group
+    # Resample the dataframe to get the last day of each month
+    # Set the "date" column as the index
+    df.set_index("date", inplace=True)
+    df_last_day = df.resample("M").last()
+
+    # Reset the index
+    df_last_day = df_last_day.reset_index()
+    df_last_day = df_last_day[::-1]
+    return df_last_day
+
+
+def get_daily_stock_prices(stock, key):
     end_date = datetime.today().strftime('%Y-%m-%d')
     start_date = (datetime.today() - timedelta(days=3653)).strftime('%Y-%m-%d')
 
@@ -274,7 +334,6 @@ def get_quarterly_income_statement(ticker, key):
  
     # Identify integer columns
     integer_columns = df.select_dtypes(include='integer').columns
-    print(integer_columns)
     # Convert integer columns to floats
     df[integer_columns] = df[integer_columns].astype(float)
  

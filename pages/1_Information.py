@@ -2,25 +2,7 @@ import streamlit as st
 import pandas as pd
 import io
 import base64
-
-
-if "datafile" not in st.session_state:
-   st.session_state["datafile"] = True
-if "network" not in st.session_state:
-   st.session_state["network"] = True
-if "profile" not in st.session_state:
-   st.session_state["profile"] = True
-if "funddata" not in st.session_state:
-   st.session_state["funddata"] = True
-if "periodes" not in st.session_state:
-   st.session_state["periodes"] = True
-if "personal_information" not in st.session_state:
-   st.session_state["personal_information"] = True
-if 'risk_score' not in st.session_state:
-   st.session_state['risk_score'] = True
-
-st.session_state["datafile"] = "Sources - PowerBI Dashboard - GPD_SSD_VMD RandomData.xlsx"
-
+from utils import *
 
 def personal_information():
     # Create a form and display the form
@@ -87,24 +69,11 @@ def risk_score_comment(risk_level):
         mandat = "I"
         riskdis = "0/100"   
     risk_level_str = f"Ton niveau de risque est: {risk_level}. Cette niveau de risque coresponde a un portefeuille de fonds privés d'un mandat {mandat}. Cette mandat a un composition de risk de {riskdis}."
-    return risk_level_str
+    return risk_level_str, mandat
 
-# Define page title and description
+common_elements_investmentora()
+page_header("Information Personelle  et Questionnaire") 
 
-# Add the logo image file in the same directory as your script
-logo_path = "media/desj.png"
-
-# Create a container to hold the logo and header
-header_container = st.container()
-
-# Add the logo to the container
-with header_container:
-    logo_col, header_col = st.columns([1, 3])
-    logo_col.image(logo_path, use_column_width=True)
-
-    # Add the header text
-    header_col.markdown("<h1 style='text-align: center;'>InvestMenTora </h1>", unsafe_allow_html=True)
-    header_col.markdown("<h2 style='text-align: center;'>Information Personelle </h2>", unsafe_allow_html=True)
 
 st.write("---")  # Horizontal line for visual separation
   
@@ -135,15 +104,16 @@ questions = {
 personal_info =  st.checkbox("Voulez-vous mettre les informations personnelles?")
 with st.form("Personal Information"):
    # Define questions and choices
-
     if personal_info:
         personal_information()
-    
+
     risk_level = questionnaire(questions)
     submitted = st.form_submit_button("Submit")
-
     if submitted:
-        st.write(risk_score_comment(risk_level))
+        comments, mandat = risk_score_comment(risk_level)
+        st.write(comments)
+        st.session_state['risk_score'] = risk_level
+        st.session_state['mandat'] = mandat
         if personal_info:
             personal_information = pd.DataFrame(columns = ['Name', 'Occupation', 'Age', 'Address'], data = [[name, occupation, age, address]])
             st.session_state["personal_information"] = personal_information

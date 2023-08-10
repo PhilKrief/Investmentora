@@ -2,7 +2,7 @@ import pandas as pd
 import streamlit as st
 
 import streamlit as st
-st.set_page_config(page_title="InvestMenTora", page_icon=":robot_face:", layout='wide')
+st.set_page_config(page_title="InvestMentora", page_icon=":robot_face:", layout='wide')
 if "datafile" not in st.session_state:
    st.session_state["datafile"] = True
 if "network" not in st.session_state:
@@ -15,6 +15,10 @@ if "periodes" not in st.session_state:
    st.session_state["periodes"] = True
 if "personal_information" not in st.session_state:
    st.session_state["personal_information"] = True
+if 'risk_score' not in st.session_state:
+   st.session_state['risk_score'] = True
+
+st.session_state["datafile"] = "Sources - PowerBI Dashboard - GPD_SSD_VMD RandomData.xlsx"
 
 def main():
     # Add custom CSS styles
@@ -24,7 +28,7 @@ def main():
         /* Add your custom CSS styles here */
         .custom-header {
             font-size: 24px;
-            color: #007bff;
+            color: #00874E;
             margin-bottom: 16px;
         }
         .section {
@@ -72,21 +76,13 @@ def main():
    <div class="custom-header">Guide</div>
    <p>Étape 1 : Téléchargez vos données. Si vous souhaitez utiliser un ensemble de valeurs générées aléatoirement pour chacun des mandats privés de GPD, veuillez cocher la case ci-dessous. </p> </div>"""
    st.markdown(guide_html, unsafe_allow_html=True)
-
-   #randomdata = st.checkbox("Voulez-vous utiliser des données aléatoires?")
-
-   #if randomdata:
-   st.session_state["datafile"] = "Sources - PowerBI Dashboard - GPD_SSD_VMD RandomData.xlsx"
-   #else:
-#st.session_state["datafile"] = st.sidebar.file_uploader("Please upload an excel file: ", type=['xlsx'])
+   st.write("---")  # Horizontal line for visual separation
 
    GPD = st.checkbox("Voulez-vous continuer avec les mandats GPD? ")
-  
    if GPD:
-      guide = st.radio(" ", ("J'ai besoin d'etre guider", "Je veux choisir moi meme mes mandats"))
-      #Guide = st.checkbox("Voulez-vous etre guider? ")
+      guide = st.radio(" ", ("J'ai besoin d'etre guider", "Je veux choisir moi meme mes mandats"), label_visibility="hidden")
       if GPD and (guide == "J'ai besoin d'etre guider"):
-         st.markdown('<a href="https://investmentora.streamlit.app/Questionnaire" target="_self" >Questionnaire</a>', unsafe_allow_html=True)
+         st.markdown('<a href="https://investmentora.streamlit.app/Information" target="_self" >Questionnaire</a>', unsafe_allow_html=True)
       if GPD and (guide == "Je veux choisir moi meme mes mandats"):  
          st.markdown('<a href="https://investmentora.streamlit.app/Rendement" target="_self">Comparaison des mandats</a>', unsafe_allow_html=True)
 

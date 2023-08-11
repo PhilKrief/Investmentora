@@ -26,7 +26,7 @@ st.session_state["periodes"] = st.sidebar.multiselect("Quelle periode veux tu vo
 indice = st.sidebar.checkbox("Veux tu voir l'indices? ")
 million = st.sidebar.checkbox("Veux tu voir l'évolution de $1,000,000 ")
 
-fees = st.sidebar.number_input("Frais annuel (en decimale)")
+fees = st.sidebar.number_input("Frais annuel")
 
 rendements_df = pd.read_excel(st.session_state["datafile"] ,sheet_name="Rendements bruts")
 indices_df = pd.read_excel(st.session_state["datafile"], sheet_name="Rendements indices")
@@ -65,7 +65,7 @@ graph_df = pd.DataFrame()
 graph_df.index = rendement_mandat.index
 
 if fees: 
-    monthly = fees / 12
+    monthly = fees / 1200
     rendement_mandat = rendement_mandat - monthly
 
 financial_metrics = pd.DataFrame()

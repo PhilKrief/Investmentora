@@ -104,20 +104,19 @@ else:
     rendement_mandat_graph = rendement_mandat 
     rendement_bench_graph = rendement_bench 
 
-if st.session_state["profile"] is not None:
-        for profile in st.session_state['profile']:
-            #profile = st.session_state['profile']
-            graph_df['PortfolioReturns'] = rendement_mandat_graph['PortfolioReturns']
-            if indice:
-                graph_df['BenchmarkReturns'] = rendement_bench_graph['PortfolioReturns']
+
+#profile = st.session_state['profile']
+graph_df['PortfolioReturns'] = rendement_mandat_graph['PortfolioReturns']
+if indice:
+    graph_df['BenchmarkReturns'] = rendement_bench_graph['PortfolioReturns']
 
         
-        st.line_chart(graph_df)
-        return_col, risk_col = st.columns([1, 1])
-        return_col.markdown("<h2 style='text-align: center;'>Rendement</h2>", unsafe_allow_html=True)
-        return_col.dataframe(return_metrics, use_container_width=True)
+st.line_chart(graph_df)
+return_col, risk_col = st.columns([1, 1])
+return_col.markdown("<h2 style='text-align: center;'>Rendement</h2>", unsafe_allow_html=True)
+return_col.dataframe(return_metrics, use_container_width=True)
 
-        risk_col.markdown("<h2 style='text-align: center;'>Risque</h2>", unsafe_allow_html=True)
-        risk_col.dataframe(risk_metrics, use_container_width=True)
+risk_col.markdown("<h2 style='text-align: center;'>Risque</h2>", unsafe_allow_html=True)
+risk_col.dataframe(risk_metrics, use_container_width=True)
 
 

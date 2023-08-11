@@ -4,6 +4,11 @@ import numpy as np
 from utils import * 
 from finance_functions import * 
 
+def allocation_df_prep(allocation, df, returns):
+    selected_row = df.loc[allocation]
+    allocation_df = pd.DataFrame( columns= selected_row.index, index= returns.Période)
+    allocation_df.loc[:,:] = selected_row.values
+    return allocation_df
 
 
 common_elements_investmentora()

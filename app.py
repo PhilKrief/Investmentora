@@ -47,14 +47,16 @@ def main():
    st.markdown(guide_html, unsafe_allow_html=True)
    st.write("---")  # Horizontal line for visual separation
 
-   GPD = st.checkbox("Voulez-vous continuer avec les mandats GPD? ")
-   if GPD:
+   GPD = st.radio("Voulez-vous continuer avec les mandats GPD? ", ("Oui", "Non"))
+
+   if GPD=="Oui":
       guide = st.radio(" ", ("J'ai besoin d'etre guider", "Je veux choisir moi meme mes mandats"), label_visibility="hidden")
       if GPD and (guide == "J'ai besoin d'etre guider"):
          st.markdown('<a href="https://investmentora.streamlit.app/Information" target="_self" >Questionnaire</a>', unsafe_allow_html=True)
       if GPD and (guide == "Je veux choisir moi meme mes mandats"):  
-         st.markdown('<a href="https://investmentora.streamlit.app/Rendement" target="_self">Comparaison des mandats</a>', unsafe_allow_html=True)
-
+         st.markdown('<a href="https://investmentora.streamlit.app/Mandats_Privés" target="_self">Comparaison des mandats</a>', unsafe_allow_html=True)
+   else:
+      st.markdown('<a href="https://investmentora.streamlit.app/Portefeuille_Externe" target="_self">Portefeuille Externe</a>', unsafe_allow_html=True)
 
 
 if __name__ == "__main__":

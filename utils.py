@@ -38,4 +38,4 @@ def page_header(page_title):
     st.markdown("<h1 style='text-align: center;'>InvestMentora </h1>", unsafe_allow_html=True)
     header_text = f"<h2 style='text-align: center;'>{page_title} </h2>"
     st.markdown(header_text, unsafe_allow_html=True)
-   st.write("---")  # Horizontal line for visual separation
+    st.write("---")  # Horizontal line for visual separation

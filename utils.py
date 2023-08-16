@@ -33,19 +33,9 @@ def common_elements_investmentora():
 
 def page_header(page_title):
    
-   # Add the logo image file in the same directory as your script
-   logo_path = "media/desj.png"
 
-   # Create a container to hold the logo and header
-   header_container = st.container()
-
-   # Add the logo to the container
-   with header_container:
-      logo_col, header_col = st.columns([1, 4])
-      logo_col.image(logo_path, use_column_width=True)
-
-      # Add the header text
-      header_col.markdown("<h1 style='text-align: center;'>InvestMentora </h1>", unsafe_allow_html=True)
-      header_text = f"<h2 style='text-align: center;'>{page_title} </h2>"
-      header_col.markdown(header_text, unsafe_allow_html=True)
+    # Add the header text
+    st.markdown("<h1 style='text-align: center;'>InvestMentora </h1>", unsafe_allow_html=True)
+    header_text = f"<h2 style='text-align: center;'>{page_title} </h2>"
+    st.markdown(header_text, unsafe_allow_html=True)
    st.write("---")  # Horizontal line for visual separation
